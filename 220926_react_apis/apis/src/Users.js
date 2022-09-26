@@ -76,7 +76,7 @@ const Users = () => {
                     <tr className="userDetails">{details}</tr>
                     <tr>
                         <td className="userDetails">
-                            <img src={image}/>
+                            <img src={image} alt=""/>
                         </td>
                         <td className="userDetails">
                             {firstName}
