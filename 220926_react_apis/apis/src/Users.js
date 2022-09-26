@@ -11,6 +11,7 @@ const Users = () => {
     const [userList,setUserList] = useState();
     const [firstName, setFirstName] = useState();
     const [lastName, setLastName] = useState();
+    const [email, setEmail] = useState();
     const [id, setId] = useState();
     const [image, setImage] = useState();
     const [details, setDetails] = useState();
@@ -35,6 +36,7 @@ const Users = () => {
         setDetails("Selected:");
         setFirstName("First Name: " + obj.first_name);
         setLastName("Last Name: " + obj.last_name);
+        setEmail("Email: " + obj.email);
         setId("ID: " + obj.id);
         setImage(obj.avatar);
     }
@@ -81,6 +83,9 @@ const Users = () => {
                             <br/><br/>
 
                             {lastName}
+                            <br/><br/>
+
+                            {email}
                             <br/><br/>
 
                             {id}
