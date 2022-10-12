@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GECO_Training.iml" filepath="$PROJECT_DIR$/GECO_Training.iml" />
       <module fileurl="file://$PROJECT_DIR$/HTML_React.iml" filepath="$PROJECT_DIR$/HTML_React.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SpringReactIntro.iml" filepath="$PROJECT_DIR$/SpringReactIntro.iml" />
       <module fileurl="file://$PROJECT_DIR$/java/java.iml" filepath="$PROJECT_DIR$/java/java.iml" />
     </modules>
   </component>
