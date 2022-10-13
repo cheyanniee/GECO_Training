@@ -4,9 +4,11 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GECO_Training.iml" filepath="$PROJECT_DIR$/GECO_Training.iml" />
       <module fileurl="file://$PROJECT_DIR$/HTML_React.iml" filepath="$PROJECT_DIR$/HTML_React.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LoginToken.iml" filepath="$PROJECT_DIR$/LoginToken.iml" />
       <module fileurl="file://$PROJECT_DIR$/SpringReactIntro.iml" filepath="$PROJECT_DIR$/SpringReactIntro.iml" />
       <module fileurl="file://$PROJECT_DIR$/introSQL.iml" filepath="$PROJECT_DIR$/introSQL.iml" />
       <module fileurl="file://$PROJECT_DIR$/java/java.iml" filepath="$PROJECT_DIR$/java/java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/react.iml" filepath="$PROJECT_DIR$/react.iml" />
     </modules>
   </component>
 </project>
