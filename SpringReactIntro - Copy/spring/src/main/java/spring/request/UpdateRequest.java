@@ -7,7 +7,7 @@ public class UpdateRequest {
     private String address;
     private int mobile;
 
-    public UpdateRequest(String targetemail, String email, String password, int mobile, String address) {
+    public UpdateRequest(String targetemail) {
         this.targetemail = targetemail;
         this.email = email;
         this.password = password;

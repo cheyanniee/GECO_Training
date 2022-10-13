@@ -3,16 +3,11 @@ import Footer from "./Footer";
 import { useState } from "react";
 
 function Update(){
-    const [userID, setUserID] = useState("");
+    const [userID, setUserID] = useState("amy@email.com");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [mobile, setMobile] = useState("");
     const [address, setAddress] = useState("");
-
-
-    const userIDChange = (targetUser) => {
-        setUserID(targetUser);
-    }
 
     const emailChange = event => {
         setEmail(event.target.value);
@@ -50,7 +45,7 @@ function Update(){
                 },
             })
             .then(res => res.json())
-            .then(res2 => {console.log(res2); alert(res2.message)})
+            .then(res2 => {console.log(res2); alert(res2.error)})
             .catch(err => alert(err))
         }
     }
@@ -64,7 +59,7 @@ function Update(){
             <div className="formInputs">
                 <p>
                     Target Email:
-                    <select onChange={(e)=>this.userIDChange(e.target.value)}>
+                    <select onChange={(e)=>setUserID(e.target.value)}>
                         <option value="amy@email.com"> amy@email.com</option>
                         <option value="brenda@email.com"> brenda@email.com</option>
                         <option value="charlie@email.com"> charlie@email.com</option>

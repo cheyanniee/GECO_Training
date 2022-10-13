@@ -90,14 +90,17 @@ public class UserController {
 
         if (userlist != null) {
             for (User user : userlist) {
+                System.out.println("Test 3");
                 if (userRequest.getEmail().equalsIgnoreCase(user.getEmail())) {
-                    userlist.remove(user);
+                    System.out.println("Test 1");
+//                    userlist.remove(user);
                     response.setMessage("User Deleted");
                     return ResponseEntity.ok(response);
                 }
             }
         }
 
+        System.out.println("Test 2");
         response.setMessage("Invalid User.");
         return ResponseEntity.badRequest().body(response);
     }

@@ -3,21 +3,17 @@ import Footer from "./Footer";
 import { useState } from "react";
 
 function Delete(){
-    const [userID, setUserID] = useState("");
-
-    const userIDChange = (targetUser) => {
-        setUserID(targetUser);
-    }
+    const [userID, setUserID] = useState("amy@email.com");
 
     const submit = event => {
         console.log(userID);
-        if (userID == undefined || userID != "") {
+        if (userID == undefined || userID == "") {
             alert("Target Email should not be empty!");
         } else {
             fetch("http://localhost:8080/delete", {
                 method:"POST",
                 body:JSON.stringify({
-                    "email": "brenda@email.com"
+                    "email": userID
                 }),
                 headers:{
                     'Content-Type': 'application/json'
@@ -33,12 +29,12 @@ function Delete(){
         <body>
             <Header/>
 
-            <h1>Delte User</h1>
+            <h1>Delete User</h1>
 
             <div className="formInputs">
                 <p>
                     Target Email:
-                    <select onChange={(e)=>this.userIDChange(e.target.value)}>
+                    <select onChange={(e)=>setUserID(e.target.value)}>
                         <option value="amy@email.com"> amy@email.com</option>
                         <option value="brenda@email.com"> brenda@email.com</option>
                         <option value="charlie@email.com"> charlie@email.com</option>

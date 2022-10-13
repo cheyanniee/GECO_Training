@@ -48,7 +48,7 @@ function Register(){
                 },
             })
             .then(res => res.json())
-            .then(res2 => {console.log(res2); alert(res2.message)})
+            .then(res2 => {console.log(res2); alert(res2.error)})
             .catch(err => alert(err))
         }
     }
