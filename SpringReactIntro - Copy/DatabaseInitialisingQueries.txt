@@ -6,30 +6,14 @@ mobile int NOT NULL,
 address varchar(50) NOT NULL);
 
 INSERT INTO userdatabaseintro.users(email, password, mobile, address)
-VALUES("amy@email.com", "amypassword123", 11111111, "Tampines");
-
-INSERT INTO userdatabaseintro.users(email, password, mobile, address)
-VALUES("brenda@email.com", "brendapassword123", 22222222, "Pasir Ris");
-
-INSERT INTO userdatabaseintro.users(email, password, mobile, address)
-VALUES("charlie@email.com", "charliepassword123", 33333333, "Bedok");
-
-INSERT INTO userdatabaseintro.users(email, password, mobile, address)
-VALUES("denise@email.com", "denisepassword123", 44444444, "Clementi");
-
-INSERT INTO userdatabaseintro.users(email, password, mobile, address)
-VALUES("elena@email.com", "elenapassword123", 55555555, "Jurong");
-
-INSERT INTO userdatabaseintro.users(email, password, mobile, address)
-VALUES("fiona@email.com", "fionapassword123", 66666666, "Bukit Panjang");
-
-INSERT INTO userdatabaseintro.users(email, password, mobile, address)
-VALUES("groot@email.com", "grootpassword123", 77777777, "Woodlands");
-
-INSERT INTO userdatabaseintro.users(email, password, mobile, address)
-VALUES("helen@email.com", "helenpassword123", 88888888, "Admiralty");
-
-INSERT INTO userdatabaseintro.users(email, password, mobile, address)
-VALUES("iris@email.com", "irispassword123", 99999999, "Yishun");
+VALUES("amy@email.com", "amypassword123", 11111111, "Tampines"),
+("brenda@email.com", "brendapassword123", 22222222, "Pasir Ris"),
+("charlie@email.com", "charliepassword123", 33333333, "Bedok"),
+("denise@email.com", "denisepassword123", 44444444, "Clementi"),
+("elena@email.com", "elenapassword123", 55555555, "Jurong"),
+("fiona@email.com", "fionapassword123", 66666666, "Bukit Panjang"),
+("groot@email.com", "grootpassword123", 77777777, "Woodlands"),
+("helen@email.com", "helenpassword123", 88888888, "Admiralty"),
+("iris@email.com", "irispassword123", 99999999, "Yishun");
 
 SELECT * FROM userdatabaseintro.users;

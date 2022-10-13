@@ -1,6 +1,10 @@
 package spring.model;
 
+import javax.persistence.*;
+
+@Entity
 public class User {
+    @Id
     private String email;
     private String password;
     private String address;
@@ -43,5 +47,15 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "User {" +
+                "email: '" + this.email + "'" +
+                ", password: '" + this.password + "'" +
+                ", mobile: " + this.mobile +
+                ", address: " + this.address  + "'" +
+                '}';
     }
 }
