@@ -1,8 +1,9 @@
 DROP TABLE IF EXISTS userdatabaseintro.users;
+
 CREATE TABLE userdatabaseintro.users
 (email varchar(50) NOT NULL PRIMARY KEY,
 password varchar(50) NOT NULL,
-mobile int NOT NULL,
+mobile varchar(50) NOT NULL,
 address varchar(50) NOT NULL);
 
 INSERT INTO userdatabaseintro.users(email, password, mobile, address)
