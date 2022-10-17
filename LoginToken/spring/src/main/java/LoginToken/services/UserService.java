@@ -28,7 +28,7 @@ public class UserService {
     @Autowired
     Environment environment;
 
-    String curDir = Paths.get("").toAbsolutePath().toString() + "/Images";
+    String curDir = Paths.get("").toAbsolutePath().toString() + "\\main\\resources\\images";
 
     public ArrayList<UserModel> getAllUsers() {
         return (ArrayList<UserModel>) userRepo.findAll();
