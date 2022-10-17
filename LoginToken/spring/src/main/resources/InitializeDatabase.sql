@@ -6,7 +6,7 @@ email varchar(50) NOT NULL,
 password varchar(50) NOT NULL,
 mobile varchar(50) NOT NULL,
 address varchar(50) NOT NULL,
-token varchar(50),
+token LONGTEXT,
 image varchar(50));
 
 INSERT INTO users(email, password, mobile, address)

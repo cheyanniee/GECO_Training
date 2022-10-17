@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class UserModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    Integer userid;
     String email;
     String password;
     String mobile;

@@ -153,8 +153,8 @@ public class UserService {
         return true;
     }
 
-    private String generateToken(String email){
-        UserModel user = getUserByEmail(email);
+    private String generateToken(UserRequest req){
+        UserModel user = getUserByEmail(req.getEmail());
 
         if (user != null) {
             Calendar expTime = Calendar.getInstance();
@@ -162,7 +162,7 @@ public class UserService {
 
             String token = Jwts.builder()
                     .claim("email", user.getEmail())
-                    .setId("" + user.getId())
+                    .setId("" + user.getUserid())
                     .setIssuedAt(new Date())
                     .setExpiration(expTime.getTime())
                     .signWith(SignatureAlgorithm.HS512, environment.getProperty("JWT_SECRET"))
@@ -170,23 +170,35 @@ public class UserService {
 
             return token;
         }
+
         return null;
     }
 
     private boolean updateToken(UserRequest req){
         UserModel user = getUserByEmail(req.getEmail());
-        if (user != null) {
-            userRepo.updateTokenForUserId(req.getToken(), user.getId());
+        if (user != null && req.getToken() != null) {
+            userRepo.updateTokenForUserId(req.getToken(), user.getUserid());
 
             UserModel userCheck = getUserByEmail(req.getEmail());
-            return (userCheck != null && userCheck.getToken().equals(req.getToken()));
+
+            if (userCheck != null) {
+
+                System.out.println(userCheck.getToken());
+
+                if (userCheck.getToken() != null) {
+                    return (userCheck.getToken().equals(req.getToken()));
+                } else {
+                    return (req.getToken() == null);
+                }
+            }
+            return false;
         }
         return false;
     }
 
     public boolean login(UserRequest req) {
         if (verifyEmailAndPassword(req)) {
-            req.setToken(generateToken(req.getEmail()));
+            req.setToken(generateToken(req));
             return updateToken(req);
         }
         return false;
@@ -195,7 +207,7 @@ public class UserService {
     public boolean logout(UserRequest req) {
         UserModel user = getUserByEmail(req.getEmail());
         if (user != null) {
-            userRepo.updateTokenForUserId(null, user.getId());
+            userRepo.updateTokenForUserId(null, user.getUserid());
             return true;
         }
         return false;
@@ -207,7 +219,7 @@ public class UserService {
         UserModel user = getUserByEmail(req.getEmail());
         if (user != null) {
             try {
-                String savePath = curDir + user.getId() + ".jpg";
+                String savePath = curDir + user.getUserid() + ".jpg";
                 System.out.println(savePath);
 
                 FileOutputStream out = new FileOutputStream(savePath);
