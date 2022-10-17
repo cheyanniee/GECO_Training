@@ -7,15 +7,20 @@ import LoginToken.services.UserService;
 import LoginToken.model.UserModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
+import org.apache.commons.io.IOUtils;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
 @RestController
 public class UserController {
     @Autowired
     UserService userService;
+
 
     @GetMapping("allusers")
     public ResponseEntity<?> getAllUsers() {
@@ -97,5 +102,26 @@ public class UserController {
             res.setMessage("Failed to Delete.");
             return ResponseEntity.badRequest().body(res);
         }
+    }
+
+    @PostMapping("uploadImage")
+    public ResponseEntity<?> uploadImage(@RequestParam UserRequest userRequest, @RequestParam MultipartFile file) throws Exception {
+         if (userService.updateProfilePic(userRequest, file)) {
+             return ResponseEntity.ok("Successfully uploaded: " + file.getOriginalFilename());
+         } else {
+             GeneralResponse res = new GeneralResponse("Failed to upload: " + file.getOriginalFilename());
+             return ResponseEntity.badRequest().body(res);
+         }
+    }
+
+    @GetMapping(value = "readImage/{userId}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public byte[] readImage(@PathVariable UserRequest userRequest) throws Exception{
+        String file = userService.readProfilePic(userRequest);
+        if (file != null) {
+            FileInputStream input = new FileInputStream(file);
+            return IOUtils.toByteArray(input);
+        }
+
+        return null;
     }
 }

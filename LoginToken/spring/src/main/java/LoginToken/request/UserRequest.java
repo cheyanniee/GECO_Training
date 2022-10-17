@@ -13,5 +13,7 @@ public class UserRequest {
     String password = null;
     String mobile = null;
     String address = null;
+    String image = null;
+
     String token = null;
 }

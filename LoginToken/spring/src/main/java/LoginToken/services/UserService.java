@@ -2,22 +2,33 @@ package LoginToken.services;
 
 import LoginToken.model.UserModel;
 import LoginToken.repository.UserRepo;
-
 import LoginToken.request.UpdateRequest;
 import LoginToken.request.UserRequest;
-import LoginToken.response.GeneralResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.core.env.Environment;
+import org.springframework.web.multipart.MultipartFile;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import java.io.FileOutputStream;
+import java.nio.file.Paths;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
 public class UserService {
     @Autowired
     UserRepo userRepo;
+
+    @Autowired
+    Environment environment;
+
+    String curDir = Paths.get("").toAbsolutePath().toString() + "/Images";
 
     public ArrayList<UserModel> getAllUsers() {
         return (ArrayList<UserModel>) userRepo.findAll();
@@ -72,6 +83,11 @@ public class UserService {
         }
 
         UserModel user = new UserModel(req.getEmail(), req.getPassword(), req.getMobile(), req.getAddress());
+
+        if (!req.getImage().equals("")) {
+            user.setImage(req.getImage());
+        }
+
         userRepo.save(user);
         return true;
     }
@@ -83,16 +99,15 @@ public class UserService {
 
     public boolean updateUser(UpdateRequest req) {
         if (!req.getTarget().equals("")) {
-            UserModel oldUser = getUserByEmail(req.getEmail());
+            UserModel user = getUserByEmail(req.getEmail());
 
-            if (oldUser != null) {
-                UserModel newUser = oldUser;
+            if (user != null) {
                 if (!req.getEmail().equals("")) {
-                    newUser = new UserModel(req.getEmail(), newUser.getPassword(), newUser.getMobile(), newUser.getAddress());
+                    user.setEmail(req.getEmail());
                 }
 
                 if (!req.getPassword().equals("")) {
-                    newUser.setPassword(req.getPassword());
+                    user.setPassword(req.getPassword());
                 }
 
                 if (!req.getMobile().equals("")) {
@@ -101,15 +116,18 @@ public class UserService {
                     } catch (Exception e) {
                         return false;
                     }
-                    newUser.setMobile(req.getMobile());
+                    user.setMobile(req.getMobile());
                 }
 
                 if (!req.getAddress().equals("")) {
-                    newUser.setAddress(req.getAddress());
+                    user.setAddress(req.getAddress());
                 }
 
-                userRepo.delete(oldUser);
-                userRepo.save(newUser);
+                if (!req.getImage().equals("")) {
+                    user.setImage(req.getImage());
+                }
+
+                userRepo.save(user);
                 return true;
             }
         }
@@ -130,36 +148,90 @@ public class UserService {
         return false;
     }
 
-    public boolean validateToken(UserRequest req) throws Exception{
-        UserModel user = getUserByEmail(req.getEmail());
-        if (user != null) {
-            return user.getToken().equals(req.getToken());
-        }
-        return false;
+    public boolean validateToken(String token) throws Exception {
+        Jwts.parser().setSigningKey(environment.getProperty("JWT_SECRET")).parseClaimsJws(token);
+        return true;
     }
 
     private String generateToken(String email){
-        String emailEncoded = Arrays.toString(Base64.getEncoder().encode(email.getBytes()));
-        return emailEncoded+System.currentTimeMillis();
+        UserModel user = getUserByEmail(email);
+
+        if (user != null) {
+            Calendar expTime = Calendar.getInstance();
+            expTime.add(Calendar.HOUR, 3);
+
+            String token = Jwts.builder()
+                    .claim("email", user.getEmail())
+                    .setId("" + user.getId())
+                    .setIssuedAt(new Date())
+                    .setExpiration(expTime.getTime())
+                    .signWith(SignatureAlgorithm.HS512, environment.getProperty("JWT_SECRET"))
+                    .compact();
+
+            return token;
+        }
+        return null;
     }
 
     private boolean updateToken(UserRequest req){
         UserModel user = getUserByEmail(req.getEmail());
         if (user != null) {
-            user.setToken(req.getToken());
-            userRepo.save(user);
-            return true;
+            userRepo.updateTokenForUserId(req.getToken(), user.getId());
+
+            UserModel userCheck = getUserByEmail(req.getEmail());
+            return (userCheck != null && userCheck.getToken().equals(req.getToken()));
         }
         return false;
     }
 
     public boolean login(UserRequest req) {
-        req.setToken(generateToken(req.getEmail()));
-        return (verifyEmailAndPassword(req) && updateToken(req));
+        if (verifyEmailAndPassword(req)) {
+            req.setToken(generateToken(req.getEmail()));
+            return updateToken(req);
+        }
+        return false;
     }
 
     public boolean logout(UserRequest req) {
-        req.setToken(null);
-        return updateToken(req);
+        UserModel user = getUserByEmail(req.getEmail());
+        if (user != null) {
+            userRepo.updateTokenForUserId(null, user.getId());
+            return true;
+        }
+        return false;
+    }
+
+    public boolean updateProfilePic(UserRequest req, MultipartFile file) {
+        System.out.println(file.getName());
+
+        UserModel user = getUserByEmail(req.getEmail());
+        if (user != null) {
+            try {
+                String savePath = curDir + user.getId() + ".jpg";
+                System.out.println(savePath);
+
+                FileOutputStream out = new FileOutputStream(savePath);
+                out.write(file.getBytes());
+
+                UpdateRequest updateRequest = new UpdateRequest(user.getEmail());
+                updateRequest.setImage(savePath);
+                if (!updateUser(updateRequest)) {
+                    return false;
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public String readProfilePic(UserRequest req) {
+        UserModel user = getUserByEmail(req.getEmail());
+        if (user != null) {
+            return user.getImage();
+        }
+        return null;
     }
 }

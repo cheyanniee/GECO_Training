@@ -14,11 +14,15 @@ import javax.persistence.*;
 @Table(name = "users")
 public class UserModel {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Integer id;
     String email;
     String password;
     String mobile;
     String address;
     String token = null;
+    String image = null;
+
 
 
     public UserModel(String email, String password, String mobile, String address) {

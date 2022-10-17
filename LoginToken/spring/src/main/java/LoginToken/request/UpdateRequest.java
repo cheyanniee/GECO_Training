@@ -13,6 +13,7 @@ public class UpdateRequest {
     String password = null;
     String mobile = null;
     String address = null;
+    String image = null;
 
     public UpdateRequest(String target) {
         this.target = target;

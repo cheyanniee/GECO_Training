@@ -1,11 +1,13 @@
 DROP TABLE IF EXISTS users; 
 
 CREATE TABLE users(
-email varchar(50) NOT NULL PRIMARY KEY,
+userid varchar(50) NOT NULL PRIMARY KEY,
+email varchar(50) NOT NULL,
 password varchar(50) NOT NULL,
 mobile varchar(50) NOT NULL,
 address varchar(50) NOT NULL,
-token varchar(50) NULL);
+token varchar(50),
+image varchar(50));
 
 INSERT INTO users(email, password, mobile, address)
 VALUES("amy@email.com", "amypassword123", "11111111", "Tampines"),
